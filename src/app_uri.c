@@ -186,7 +186,7 @@ httpd_uri_t *app_uri_srv_get(uri_srv_t key){
     return &URI_SRV_TABLE[key];
 }
 
-void app_uri_init()
+void app_uri_srv_init(void)
 {   
     ra_filter_init(&ra_filter, 20);
 }
