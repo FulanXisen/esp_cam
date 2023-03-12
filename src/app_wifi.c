@@ -6,6 +6,7 @@
 
 #include "freertos/event_groups.h"
 
+#include "app_http.h"
 static const char *TAG = "app_wifi";
 
 #define CONFIG_WIFI_WPA2_ENT_EAP_ID "fanyx@shanghaitech.edu.cn"
@@ -22,19 +23,32 @@ static esp_netif_t *netif_sta = NULL;
 const int CONNECTED_BIT = BIT0;
 
 static void event_handler(void* arg, esp_event_base_t event_base,
-                                int32_t event_id, void* event_data)
-{
+                                int32_t event_id, void* event_data){
+    static httpd_handle_t server = NULL;
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
+        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
+        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_DISCONNECTED");
         esp_wifi_connect();
         xEventGroupClearBits(wifi_event_group, CONNECTED_BIT);
+        if ( server == NULL ){
+
+        }else if (server != NULL){
+            app_http_stop_webserver(server);
+            server = NULL;
+        }
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
         xEventGroupSetBits(wifi_event_group, CONNECTED_BIT);
+        if (server == NULL){
+            server = app_http_start_webserver();
+        }
     }
 }
 
 static void _wifi_mode_sta_wpa2_ent_method_peap_init(){
+
     ESP_ERROR_CHECK(esp_netif_init());
     wifi_event_group = xEventGroupCreate();
     ESP_ERROR_CHECK(esp_event_loop_create_default());
