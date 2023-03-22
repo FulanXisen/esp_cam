@@ -1,7 +1,7 @@
 #include "esp_log.h"
 #include "esp_camera.h"
 
-#include "app_camera.h"
+#include "srv_camera.h"
 
 static const char *TAG = "example:take_picture";
 

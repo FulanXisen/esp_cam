@@ -3,7 +3,7 @@
 #include <esp_http_server.h>
 #include <esp_camera.h>
 
-#include <app_uri.h>
+#include "srv_uri.h"
 static const char * TAG = "uri";
 
 static esp_err_t index_handler(httpd_req_t *req)
@@ -182,11 +182,11 @@ httpd_uri_t URI_SRV_TABLE[URI_SRV_LAST] = {
     },
 };
 
-httpd_uri_t *app_uri_srv_get(uri_srv_t key){
+httpd_uri_t *app_srv_uri_srv_get(uri_srv_t key){
     return &URI_SRV_TABLE[key];
 }
 
-void app_uri_srv_init(void)
+void app_srv_uri_init(void)
 {   
     ra_filter_init(&ra_filter, 20);
 }

@@ -7,8 +7,8 @@
 #include <sys/param.h>
 #include <esp_camera.h>
 
-#include "app_http.h"
-#include "app_uri.h"
+#include "srv_http.h"
+#include "srv_uri.h"
 
 static const char *TAG="webserver";
 
@@ -63,7 +63,7 @@ httpd_handle_t app_http_start_webserver(void)
     if (httpd_register_uri_handler(server, &uri_handler_jpg) != ESP_OK){
         ESP_LOGI(TAG, "registering uri handler failed");
     }
-    if (httpd_register_uri_handler(server, app_uri_srv_get(URI_SRV_STREAM)) != ESP_OK){
+    if (httpd_register_uri_handler(server, app_srv_uri_srv_get(URI_SRV_STREAM)) != ESP_OK){
         ESP_LOGI(TAG, "registering uri handler failed");
     }
     return server;
