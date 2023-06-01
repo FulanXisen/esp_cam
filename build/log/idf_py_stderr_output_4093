@@ -1,0 +1,13 @@
+CMake Error at /home/fanyx/wk/esp-idf/tools/cmake/build.cmake:519 (message):
+  ERROR: Solver failed processing dependency "espressif/bt" from the manifest
+  file "/home/fanyx/wk/esp32cam/main/idf_component.yml".
+
+  Cannot find versions of "espressif/bt" satisfying "^1.0.0" for the current
+  target "esp32".
+
+Call Stack (most recent call first):
+  /home/fanyx/wk/esp-idf/tools/cmake/project.cmake:447 (idf_build_process)
+  CMakeLists.txt:5 (project)
+
+
+ninja: error: rebuilding 'build.ninja': subcommand failed
