@@ -1,16 +1,18 @@
 # This file was automatically generated for projects
 # without default 'CMakeLists.txt' file.
 
-FILE(GLOB_RECURSE app_sources ${CMAKE_SOURCE_DIR}/main/*.*)
+FILE(GLOB_RECURSE srcs 
+    ${CMAKE_SOURCE_DIR}/main/*.c
+)
 
-MESSAGE( STATUS "SRCS: ${app_sources}")
+MESSAGE( STATUS "SRCS: ${srcs}")
 idf_component_register(
-    SRCS ${app_sources}
-    INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/include"
+    SRCS ${srcs}
+    INCLUDE_DIRS 
+        "${CMAKE_SOURCE_DIR}/include" 
+        "${CMAKE_SOURCE_DIR}/main"
+        "${CMAKE_SOURCE_DIR}/main/module/m_camera"
     #REQUIRES esp_camera
     EMBED_FILES
         www/index_ov2640_html_gz
 )
-
-#register_component()
-#target_link_libraries(${COMPONENT_TARGET} "-L ${CMAKE_SOURCE_DIR}/lib")
