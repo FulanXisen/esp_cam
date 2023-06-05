@@ -1,7 +1,0 @@
-[0/1] Re-running CMake...
--- Building ESP-IDF components for target esp32
-Solving dependencies requirements
--- Configuring incomplete, errors occurred!
-See also "/home/fanyx/wk/esp32cam/build/CMakeFiles/CMakeOutput.log".
-FAILED: build.ninja 
-/usr/bin/cmake -S/home/fanyx/wk/esp32cam -B/home/fanyx/wk/esp32cam/build
