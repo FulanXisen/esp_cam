@@ -16,7 +16,7 @@
 static const char *DEFALUT_TAG = "mCamera";
 static const char *TAG = "example:take_picture";
 
-static camera_config_t camera_default_config = {
+static camera_config_t default_camera_config = {
     .pin_pwdn = CAM_PIN_PWDN,
     .pin_reset = CAM_PIN_RESET,
     .pin_xclk = CAM_PIN_XCLK,
@@ -48,8 +48,8 @@ static camera_config_t camera_default_config = {
     .grab_mode = CAMERA_GRAB_WHEN_EMPTY,
 };
 
-error_t m_camera_default_init(void){
-    esp_err_t err = esp_camera_init(&camera_default_config);
+error_t m_camera_init_default(void){
+    esp_err_t err = esp_camera_init(&default_camera_config);
     if (err != ESP_OK)
     {
         ESP_LOGE(TAG, "Camera Init Failed");
@@ -89,6 +89,7 @@ error_t m_camera_capture_once(camera_fb_cb_t cb){
     esp_camera_fb_return(fb);
     return ret;
 }
+
 esp_err_t camera_capture(){
     //acquire a frame
     camera_fb_t * fb = esp_camera_fb_get();

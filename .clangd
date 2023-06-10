@@ -1,6 +1,7 @@
 CompileFlags:                     
   # add include for compiler's std lib 
-  Add: [-I/Users/fanyx/.espressif/tools/xtensa-esp32-elf/esp-2022r1-11.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include] 
+  Add: [-I/Users/fanyx/.espressif/tools/xtensa-esp32-elf/esp-2022r1-11.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include,
+    -mlong-calls] 
   # -I/Users/fanyx/.espressif/tools/xtensa-esp32-elf/esp-2022r1-11.2.0/xtensa-esp32-elf/xtensa-esp32-elf/sys-include ]
   # Add: [-I/opt/st/stm32cubeide_1.12.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.200.# 202301161003/tools/arm-none-eabi/include]             
   # remove clang's unsupported flags of gcc

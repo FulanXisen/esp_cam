@@ -56,7 +56,7 @@
 
 typedef error_t (*camera_fb_cb_t)(camera_fb_t *);
 
-error_t m_camera_default_init(void);
+error_t m_camera_init_default(void);
 error_t m_camera_init(const camera_config_t *config);
 error_t m_camera_capture_once(camera_fb_cb_t cb);
 
