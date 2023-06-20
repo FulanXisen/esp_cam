@@ -13,6 +13,7 @@ idf_component_register(
         "${CMAKE_SOURCE_DIR}/main"
         "${CMAKE_SOURCE_DIR}/main/module/m_camera"
         "${CMAKE_SOURCE_DIR}/main/module/m_wifi"
+        "${CMAKE_SOURCE_DIR}/main/module/m_uri"
     #REQUIRES esp_camera
     EMBED_FILES
         www/index_ov2640_html_gz

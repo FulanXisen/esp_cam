@@ -1,7 +1,6 @@
 #ifndef __M_CAMERA_H__
 #define __M_CAMERA_H__
 
-#include "error.h"
 #include "esp_camera.h"
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS portTICK_PERIOD_MS
@@ -54,10 +53,10 @@
 #define CAM_PIN_PCLK 22
 #endif
 
-typedef error_t (*camera_fb_cb_t)(camera_fb_t *);
+typedef esp_err_t (*camera_fb_cb_t)(camera_fb_t *);
 
-error_t m_camera_init_default(void);
-error_t m_camera_init(const camera_config_t *config);
-error_t m_camera_capture_once(camera_fb_cb_t cb);
+esp_err_t m_camera_init_default(void);
+esp_err_t m_camera_init(const camera_config_t *config);
+esp_err_t m_camera_capture_once(camera_fb_cb_t cb);
 
 #endif 

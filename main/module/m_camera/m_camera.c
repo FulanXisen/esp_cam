@@ -1,7 +1,6 @@
 /* std header */
 
 /* sdk header */
-#include "error.h"
 #include "esp_log.h"
 #include "esp_camera.h"
 
@@ -14,7 +13,6 @@
 #include "sensor.h"
 
 static const char *DEFALUT_TAG = "mCamera";
-static const char *TAG = "example:take_picture";
 
 static camera_config_t default_camera_config = {
     .pin_pwdn = CAM_PIN_PWDN,
@@ -48,35 +46,35 @@ static camera_config_t default_camera_config = {
     .grab_mode = CAMERA_GRAB_WHEN_EMPTY,
 };
 
-error_t m_camera_init_default(void){
+esp_err_t m_camera_init_default(void){
     esp_err_t err = esp_camera_init(&default_camera_config);
     if (err != ESP_OK)
     {
-        ESP_LOGE(TAG, "Camera Init Failed");
+        ESP_LOGE(DEFALUT_TAG, "Camera Init Failed");
         return err;
     }
 
     return ESP_OK;
 }
 
-error_t m_camera_init(const camera_config_t *config){
+esp_err_t m_camera_init(const camera_config_t *config){
     //initialize the camera
     esp_err_t err = esp_camera_init(config);
     if (err != ESP_OK)
     {
-        ESP_LOGE(TAG, "Camera Init Failed");
+        ESP_LOGE(DEFALUT_TAG, "Camera Init Failed");
         return err;
     }
 
     return ESP_OK;
 }
 
-error_t m_camera_capture_once(camera_fb_cb_t cb){
-    error_t ret = ESP_OK;
+esp_err_t m_camera_capture_once(camera_fb_cb_t cb){
+    esp_err_t ret = ESP_OK;
     //acquire a frame
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
-        ESP_LOGE(TAG, "Camera Capture Failed");
+        ESP_LOGE(DEFALUT_TAG, "Camera Capture Failed");
         return ESP_FAIL;
     }
     //replace this with your own function
@@ -94,7 +92,7 @@ esp_err_t camera_capture(){
     //acquire a frame
     camera_fb_t * fb = esp_camera_fb_get();
     if (!fb) {
-        ESP_LOGE(TAG, "Camera Capture Failed");
+        ESP_LOGE(DEFALUT_TAG, "Camera Capture Failed");
         return ESP_FAIL;
     }
     //replace this with your own function

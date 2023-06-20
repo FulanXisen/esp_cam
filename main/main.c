@@ -3,6 +3,7 @@
 #include <nvs_flash.h>
 #include <sys/param.h>
 
+#include "esp_err.h"
 #include "freertos/FreeRTOSConfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/portmacro.h"
@@ -17,31 +18,23 @@
 #include "esp_log.h"
 #include "esp_attr.h"
 
-#include "srv_uri.h"
-//static const char *TAG="main";
+#include "m_camera.h"
+#include "m_wifi.h"
+#include "m_uri.h"
+static const char *DEFAULT_TAG="APP_MAIN";
 
 void app_main()
-{
-    // if(ESP_OK != init_camera()) {
-    //     return;
-    // }
-    // ESP_ERROR_CHECK(nvs_flash_init());
-    // app_srv_uri_init();
+{   
+    ESP_LOGI(DEFAULT_TAG, "HELLO XUEJIAO");
 
-    // WIFI_MODE_CONFIG_t wifi_mode_cfg = {
-    //     .sta = {
-    //         .ssid = "ShanghaiTech",
-    //     },
-    // };
-    // WIFI_AUTH_CONFIG_t wifi_auth_cfg = {
-    //     .wpa2ent = {
-    //         .id = "fanyx@shanghaitech.edu.cn",
-    //         .username = "2020233216",
-    //         .password = "Fanfan227571",
-    //     },
-    // };
-    // srv_wifi_register_mode_config(EX_WIFI_MODE_STA, wifi_mode_cfg);
-    // srv_wifi_register_auth_config(EX_WIFI_AUTH_WPA2_ENTERPRISE, wifi_auth_cfg);
-    // srv_wifi_setup_and_start(EX_WIFI_MODE_STA, EX_WIFI_AUTH_WPA2_ENTERPRISE);
-    
+    m_camera_init_default();
+    //ESP_ERROR_CHECK(nvs_flash_init());
+    //m_wifi_sta_init_default();
+
+    //m_uri_init_default();
+    uint32_t i = 0;
+    for (;;) {
+        vTaskDelay(2000);
+        ESP_LOGI(DEFAULT_TAG, "CNT %lu", i++);
+    }
 }

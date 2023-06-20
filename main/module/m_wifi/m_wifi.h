@@ -31,6 +31,7 @@
 
 void m_wifi_ap_init(void);
 void m_wifi_sta_init(void);
+void m_wifi_sta_init_default(void);
 void m_wifi_apsta_init(void);
 
 #endif /* __M_WIFI_H__ */
