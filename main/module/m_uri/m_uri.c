@@ -17,17 +17,17 @@ typedef struct{
 
 /* BEGIN internal Func Decls BEGIN */
 static esp_err_t uri_stream_handler(httpd_req_t *req);
-static esp_err_t uri_index_handler(httpd_req_t *req);
+static esp_err_t uri_capture_handler(httpd_req_t *req);
 /* END internal Func Decls END */
 
 /** BEGIN internal Var Defs **/
 static const char * DEFAULT_TAG = "mURI";
 static ra_filter_t ra_filter;
 httpd_uri_t URI_HANDLE_TBL[URI_KIND_SIZE] = {
-    [URI_KIND_INDEX] = {
-        .uri = "/",
+    [URI_KIND_CAPTURE] = {
+        .uri = "/capture",
         .method = HTTP_GET,
-        .handler = uri_index_handler,
+        .handler = uri_capture_handler,
         .user_ctx = NULL,
     },
     [URI_KIND_STREAM] = {
@@ -74,17 +74,40 @@ static int ra_filter_run(ra_filter_t *filter, int value)
     return filter->sum / filter->count;
 }
 
-static esp_err_t uri_index_handler(httpd_req_t *req){
-    extern const unsigned char index_ov2640_html_gz_start[] asm("_binary_index_ov2640_html_gz_start");
-    extern const unsigned char index_ov2640_html_gz_end[] asm("_binary_index_ov2640_html_gz_end");
-    size_t index_ov2640_html_gz_len = index_ov2640_html_gz_end - index_ov2640_html_gz_start;
+static esp_err_t uri_capture_handler(httpd_req_t *req){
+    // extern const unsigned char index_ov2640_html_gz_start[] asm("_binary_index_ov2640_html_gz_start");
+    // extern const unsigned char index_ov2640_html_gz_end[] asm("_binary_index_ov2640_html_gz_end");
+    // size_t index_ov2640_html_gz_len = index_ov2640_html_gz_end - index_ov2640_html_gz_start;
 
-    httpd_resp_set_type(req, "text/html");
-    httpd_resp_set_hdr(req, "Content-Encoding", "gzip");
-    sensor_t *s = esp_camera_sensor_get();
-    assert(s != NULL);
-    assert(s->id.PID == OV2640_PID);
-    return httpd_resp_send(req, (const char *)index_ov2640_html_gz_start, index_ov2640_html_gz_len);
+  camera_fb_t *fb = NULL;
+  esp_err_t res = ESP_OK;
+  size_t fb_len = 0;
+  int64_t fr_start = esp_timer_get_time();
+  fb = esp_camera_fb_get();
+  if (!fb){
+    ESP_LOGE(DEFAULT_TAG, "Camera capture failed");
+    httpd_resp_send_500(req);
+    return ESP_FAIL;
+  }
+  res = httpd_resp_set_type(req, "image/jpeg");
+  if (res == ESP_OK){
+    res = httpd_resp_set_hdr(req, "Content-Disposition", "inline; filename=capture.jpg");
+  }
+
+  if (res == ESP_OK){
+    fb_len = fb->len;
+    res = httpd_resp_send(req, (const char *)fb->buf, fb->len);
+  }
+  esp_camera_fb_return(fb);
+  int64_t fr_end = esp_timer_get_time();
+  ESP_LOGI(DEFAULT_TAG, "JPG: %luKB %lums", (uint32_t)(fb_len / 1024), (uint32_t)((fr_end - fr_start) / 1000));
+  return res;
+    // httpd_resp_set_type(req, "text/html");
+    // httpd_resp_set_hdr(req, "Content-Encoding", "gzip");
+    // sensor_t *s = esp_camera_sensor_get();
+    // assert(s != NULL);
+    // assert(s->id.PID == OV2640_PID);
+    //return httpd_resp_send(req, (const char *)index_ov2640_html_gz_start, index_ov2640_html_gz_len);
 }
 
 static esp_err_t uri_stream_handler(httpd_req_t *req){

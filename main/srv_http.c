@@ -60,7 +60,7 @@ httpd_handle_t app_http_start_webserver(void)
   {
     // Set URI handlers
     ESP_LOGI(TAG, "Registering URI handlers");
-    if (httpd_register_uri_handler(server, &uri_handler_jpg) != ESP_OK){
+    if (httpd_register_uri_handler(server, m_uri_get_uri_handler(URI_KIND_CAPTURE)) != ESP_OK){
         ESP_LOGI(TAG, "registering uri handler failed");
     }
     if (httpd_register_uri_handler(server, m_uri_get_uri_handler(URI_KIND_STREAM)) != ESP_OK){

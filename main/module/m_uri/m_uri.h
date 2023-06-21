@@ -3,7 +3,7 @@
 #include "esp_http_server.h"
 typedef enum {
     URI_KIND_NONE,
-    URI_KIND_INDEX,
+    URI_KIND_CAPTURE,
     URI_KIND_STREAM,
     URI_KIND_SIZE,
 } m_uri_kind_t;

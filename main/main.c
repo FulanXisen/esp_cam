@@ -28,13 +28,15 @@ void app_main()
     ESP_LOGI(DEFAULT_TAG, "HELLO XUEJIAO");
 
     m_camera_init_default();
-    //ESP_ERROR_CHECK(nvs_flash_init());
-    //m_wifi_sta_init_default();
+    ESP_ERROR_CHECK(nvs_flash_init());
+    m_wifi_sta_init_default();
 
-    //m_uri_init_default();
-    uint32_t i = 0;
+    m_uri_init_default();
+    volatile uint32_t i = 0;
     for (;;) {
-        vTaskDelay(2000);
-        ESP_LOGI(DEFAULT_TAG, "CNT %lu", i++);
+        
+        vTaskDelay(1000/portTICK_PERIOD_MS);
+        ESP_LOGI(DEFAULT_TAG, "CNT %lu", i);
+        i++;
     }
 }

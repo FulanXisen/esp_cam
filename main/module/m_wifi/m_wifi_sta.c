@@ -27,7 +27,7 @@
 /* BEGIN Private Variables Definition */
 static const char *DEFAULT_TAG = "mWiFi"; /* log tag for this module */
 
-extern esp_netif_t *netif_sta; /* esp netif object representing the WIFI station */
+esp_netif_t *netif_sta; /* esp netif object representing the WIFI station */
 
 static EventGroupHandle_t wifi_event_group; /* FreeRTOS event group to signal when we are connected & ready to make a request */
 
@@ -122,23 +122,28 @@ void m_wifi_sta_init_default(void) {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK( esp_wifi_init(&cfg));
 
-    /* wifi config store only in MEM */
-    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM));
-
+    wifi_config_t wifi_config = {
+        .sta = {
+            .ssid = CONFIG_WIFI_IDENTITY,
+            .password = CONFIG_WIFI_PASSWORD,
+            .threshold.authmode = WIFI_AUTH_WPA_PSK,
+        },
+    };
     ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA) );
-    ESP_LOGI(DEFAULT_TAG, "WiFi mode is STA");
+    ESP_LOGI(DEFAULT_TAG, "STA Mode");
 
-    wifi_config_t wifi_config;
-    memcpy(wifi_config.sta.ssid, CONFIG_WIFI_IDENTITY, sizeof(CONFIG_WIFI_IDENTITY));
-    memcpy(wifi_config.sta.password, CONFIG_WIFI_PASSWORD, sizeof(CONFIG_WIFI_PASSWORD));
+       /* wifi config store only in MEM */
+    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM));
     ESP_ERROR_CHECK( esp_wifi_set_config(WIFI_IF_STA, &wifi_config) );
-    ESP_LOGI(DEFAULT_TAG, "WiFi SSID is %s...", CONFIG_WIFI_IDENTITY);
+
+    ESP_LOGI(DEFAULT_TAG, "ssid is %s...", CONFIG_WIFI_IDENTITY);
+    ESP_LOGI(DEFAULT_TAG, "password is %s...", CONFIG_WIFI_PASSWORD);
 
     ESP_ERROR_CHECK( esp_wifi_start() );
-    ESP_LOGI(DEFAULT_TAG, "WiFi start ");
+    ESP_LOGI(DEFAULT_TAG, "start ");
 
-    ESP_ERROR_CHECK( esp_wifi_connect() );
-    ESP_LOGI(DEFAULT_TAG, "WiFi connect");
+    // ESP_ERROR_CHECK( esp_wifi_connect() );
+    // ESP_LOGI(DEFAULT_TAG, "connect");
 }
 
 void m_wifi_sta_init(void) {
